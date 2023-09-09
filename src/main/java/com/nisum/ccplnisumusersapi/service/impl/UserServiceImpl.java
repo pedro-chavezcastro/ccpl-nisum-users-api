@@ -46,7 +46,10 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public void deleteUser(UUID userId) {
+        UserEntity userEntity = this.findUserEntityById(userId);
+        userEntity.setIsActive(Boolean.FALSE);
 
+        this.saveUserEntity(userEntity);
     }
 
     @Override
