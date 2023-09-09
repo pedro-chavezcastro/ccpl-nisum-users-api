@@ -2,8 +2,10 @@ package com.nisum.ccplnisumusersapi.service.impl.mapper;
 
 import com.nisum.ccplnisumusersapi.dataprovider.jpa.entity.PhoneEntity;
 import com.nisum.ccplnisumusersapi.dataprovider.jpa.entity.UserEntity;
+import com.nisum.ccplnisumusersapi.model.PageUserDto;
 import com.nisum.ccplnisumusersapi.model.PhoneDto;
 import com.nisum.ccplnisumusersapi.model.UserDto;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -42,6 +44,16 @@ public class UserMapperImpl implements IUserMapper {
         userDto.setPhones(userEntity.getPhones().stream().map(this::mapOutPhoneEntityToDto).collect(Collectors.toList()));
         userDto.setToken(userEntity.getAccessToken());
         return userDto;
+    }
+
+    @Override
+    public PageUserDto mapOutUserEntityToPageDto(Page<UserEntity> userPage) {
+        PageUserDto pageUserDto = new PageUserDto();
+        pageUserDto.setTotalItems(userPage.getTotalElements());
+        pageUserDto.setUsers(userPage.getContent().stream().map(this::mapOutUserEntityToDto).collect(Collectors.toList()));
+        pageUserDto.setCurrentPage(userPage.getNumber());
+        pageUserDto.setTotalPages(userPage.getTotalPages());
+        return pageUserDto;
     }
 
     private void mapInPhoneDtoToEntity(UserEntity userEntity, PhoneDto phoneDto) {

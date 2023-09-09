@@ -41,12 +41,14 @@ public class UserController implements UsersApi {
 
     @Override
     public ResponseEntity<PageUserDto> getAllUsers(Integer page, Integer size) {
-        return UsersApi.super.getAllUsers(page, size);
+        PageUserDto pageUser = this.service.getAllUsers(page, size);
+        return ResponseEntity.ok(pageUser);
     }
 
     @Override
     public ResponseEntity<UserDto> getUserById(UUID userId) {
-        return UsersApi.super.getUserById(userId);
+        UserDto user = this.service.getUserById(userId);
+        return ResponseEntity.ok(user);
     }
 
     @Override

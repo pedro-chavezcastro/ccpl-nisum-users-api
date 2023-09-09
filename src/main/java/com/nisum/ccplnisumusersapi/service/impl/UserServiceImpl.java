@@ -11,6 +11,9 @@ import com.nisum.ccplnisumusersapi.service.IUserService;
 import com.nisum.ccplnisumusersapi.service.impl.mapper.IUserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -48,12 +51,15 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public PageUserDto getAllUsers(Integer page, Integer size) {
-        return null;
+        Pageable pageable = PageRequest.of(page, size);
+        Page<UserEntity> userPage = this.userRepository.findByIsActive(Boolean.TRUE, pageable);
+        return this.mapper.mapOutUserEntityToPageDto(userPage);
     }
 
     @Override
     public UserDto getUserById(UUID userId) {
-        return null;
+        UserEntity userEntity = this.findUserEntityById(userId);
+        return this.mapper.mapOutUserEntityToDto(userEntity);
     }
 
     @Override
@@ -72,5 +78,12 @@ public class UserServiceImpl implements IUserService {
 
     private UserEntity saveUserEntity(UserEntity userEntity) {
         return this.userRepository.save(userEntity);
+    }
+
+    private UserEntity findUserEntityById(UUID userId) {
+        return this.userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(
+                        String.format(MessageErrorEnum.NISUM001.getDescription(), userId),
+                        MessageErrorEnum.NISUM001.getCode()));
     }
 }
