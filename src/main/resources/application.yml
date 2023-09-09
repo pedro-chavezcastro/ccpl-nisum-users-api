@@ -13,3 +13,6 @@ spring:
     console.enabled: true
   jpa:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+
+custom:
+  password-regex: '^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'

@@ -1,9 +1,6 @@
 package com.nisum.ccplnisumusersapi.dataprovider.jpa.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -20,11 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@AllArgsConstructor
-@Builder
 @Entity
 @Getter
-@NoArgsConstructor
 @Setter
 @Table(name = "users")
 public class UserEntity {

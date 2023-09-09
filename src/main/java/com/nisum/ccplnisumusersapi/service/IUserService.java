@@ -1,7 +1,7 @@
 package com.nisum.ccplnisumusersapi.service;
 
-import com.nisum.ccplnisumusers.model.PageUserDto;
-import com.nisum.ccplnisumusers.model.UserDto;
+import com.nisum.ccplnisumusersapi.model.PageUserDto;
+import com.nisum.ccplnisumusersapi.model.UserDto;
 
 import java.util.UUID;
 

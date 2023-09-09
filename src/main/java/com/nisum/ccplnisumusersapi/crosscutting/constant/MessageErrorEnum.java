@@ -8,7 +8,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum MessageErrorEnum {
 
-    NISUM000("NISUM000", "Error general.");
+    NISUM000("NISUM000", "Error general."),
+    NISUM001("NISUM001", "Usuario con id '%s' no existe."),
+    NISUM002("NISUM002", "El correo '%s' ya ha sido registrado."),
+    NISUM003("NISUM003", "Error en validación de campos de entrada.");
 
     private final String code;
     private final String description;

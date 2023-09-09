@@ -156,10 +156,11 @@
 						</goals>
 						<configuration>
 							<inputSpec>${project.basedir}/api/ccpl-nisum-users-api.yml</inputSpec>
+							<templateDirectory>${project.basedir}/src/main/resources/openapi/templates</templateDirectory>
 							<generatorName>spring</generatorName>
 							<library>spring-boot</library>
-							<apiPackage>com.nisum.ccplnisumusers.api</apiPackage>
-							<modelPackage>com.nisum.ccplnisumusers.model</modelPackage>
+							<apiPackage>com.nisum.ccplnisumusersapi.api</apiPackage>
+							<modelPackage>com.nisum.ccplnisumusersapi.model</modelPackage>
 							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
 							<configOptions>
 								<interfaceOnly>true</interfaceOnly>

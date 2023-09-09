@@ -1,21 +1,37 @@
 package com.nisum.ccplnisumusersapi.controller;
 
-import com.nisum.ccplnisumusers.api.UsersApi;
-import com.nisum.ccplnisumusers.model.PageUserDto;
-import com.nisum.ccplnisumusers.model.UserDto;
+import com.nisum.ccplnisumusersapi.api.UsersApi;
+import com.nisum.ccplnisumusersapi.model.PageUserDto;
+import com.nisum.ccplnisumusersapi.model.UserDto;
+import com.nisum.ccplnisumusersapi.service.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1")
 public class UserController implements UsersApi {
 
+    @Autowired
+    private IUserService service;
+
     @Override
     public ResponseEntity<UserDto> createUser(UserDto userDto) {
-        return UsersApi.super.createUser(userDto);
+        UserDto user = this.service.createUser(userDto);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(user.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(user);
+
     }
 
     @Override
