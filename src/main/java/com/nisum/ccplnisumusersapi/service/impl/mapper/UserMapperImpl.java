@@ -4,6 +4,7 @@ import com.nisum.ccplnisumusersapi.dataprovider.jpa.entity.PhoneEntity;
 import com.nisum.ccplnisumusersapi.dataprovider.jpa.entity.UserEntity;
 import com.nisum.ccplnisumusersapi.model.PageUserDto;
 import com.nisum.ccplnisumusersapi.model.PhoneDto;
+import com.nisum.ccplnisumusersapi.model.UpdateUserDto;
 import com.nisum.ccplnisumusersapi.model.UserDto;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -54,6 +55,12 @@ public class UserMapperImpl implements IUserMapper {
         pageUserDto.setCurrentPage(userPage.getNumber());
         pageUserDto.setTotalPages(userPage.getTotalPages());
         return pageUserDto;
+    }
+
+    @Override
+    public void mapInUpdateUser(UserEntity userEntity, UpdateUserDto userDto) {
+        userEntity.setName(userDto.getName());
+        userEntity.setPassword(userDto.getPassword());
     }
 
     private void mapInPhoneDtoToEntity(UserEntity userEntity, PhoneDto phoneDto) {

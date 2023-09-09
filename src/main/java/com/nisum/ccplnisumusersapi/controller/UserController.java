@@ -2,6 +2,7 @@ package com.nisum.ccplnisumusersapi.controller;
 
 import com.nisum.ccplnisumusersapi.api.UsersApi;
 import com.nisum.ccplnisumusersapi.model.PageUserDto;
+import com.nisum.ccplnisumusersapi.model.UpdateUserDto;
 import com.nisum.ccplnisumusersapi.model.UserDto;
 import com.nisum.ccplnisumusersapi.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,8 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    public ResponseEntity<Void> updateUser(UUID userId, UserDto userDto) {
-        return UsersApi.super.updateUser(userId, userDto);
+    public ResponseEntity<Void> updateUser(UUID userId, UpdateUserDto userDto) {
+        this.service.updateUser(userId, userDto);
+        return ResponseEntity.ok().build();
     }
 }

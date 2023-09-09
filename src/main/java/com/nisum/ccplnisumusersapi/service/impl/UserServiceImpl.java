@@ -6,6 +6,7 @@ import com.nisum.ccplnisumusersapi.dataprovider.jpa.repository.IPhoneRepository;
 import com.nisum.ccplnisumusersapi.dataprovider.jpa.repository.IUserRepository;
 import com.nisum.ccplnisumusersapi.exception.BusinessException;
 import com.nisum.ccplnisumusersapi.model.PageUserDto;
+import com.nisum.ccplnisumusersapi.model.UpdateUserDto;
 import com.nisum.ccplnisumusersapi.model.UserDto;
 import com.nisum.ccplnisumusersapi.service.IUserService;
 import com.nisum.ccplnisumusersapi.service.impl.mapper.IUserMapper;
@@ -66,8 +67,10 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void updateUser(UUID userId, UserDto userDto) {
-
+    public void updateUser(UUID userId, UpdateUserDto userDto) {
+        UserEntity userEntity = this.findUserEntityById(userId);
+        this.mapper.mapInUpdateUser(userEntity, userDto);
+        this.saveUserEntity(userEntity);
     }
 
     private void validateExistingUser(UserDto userDto) {

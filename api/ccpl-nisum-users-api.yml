@@ -148,7 +148,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserDto"
+              $ref: "#/components/schemas/UpdateUserDto"
       responses:
         "200":
           description: User updated successfully.
@@ -305,6 +305,27 @@ components:
       required:
         - name
         - email
+        - password
+        - phones
+    UpdateUserDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The user's full name.
+        password:
+          type: string
+          format: password
+          description: The user's password.
+          writeOnly: true
+          x-constraints: "@CustomPasswordValidation"
+        phones:
+          type: array
+          items:
+            $ref: "#/components/schemas/PhoneDto"
+          description: List of user's phone numbers.
+      required:
+        - name
         - password
         - phones
     PhoneDto:

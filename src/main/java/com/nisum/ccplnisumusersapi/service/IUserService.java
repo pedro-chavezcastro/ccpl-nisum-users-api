@@ -1,6 +1,7 @@
 package com.nisum.ccplnisumusersapi.service;
 
 import com.nisum.ccplnisumusersapi.model.PageUserDto;
+import com.nisum.ccplnisumusersapi.model.UpdateUserDto;
 import com.nisum.ccplnisumusersapi.model.UserDto;
 
 import java.util.UUID;
@@ -15,6 +16,6 @@ public interface IUserService {
 
     UserDto getUserById(UUID userId);
 
-    void updateUser(UUID userId, UserDto userDto);
+    void updateUser(UUID userId, UpdateUserDto userDto);
 
 }
