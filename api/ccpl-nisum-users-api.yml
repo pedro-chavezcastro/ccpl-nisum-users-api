@@ -1,0 +1,382 @@
+openapi: 3.0.0
+info:
+  title: User Management API
+  description: API for managing user information.
+  version: 1.0.0
+  contact:
+    name: Pedro Luis Chavez Castro
+    email: chavezcastro.pedroluis98@gmail.com
+    url: https://www.linkedin.com/in/pedro-luis-chavez-castro-2b60401a5/
+servers:
+  - url: "http://localhost:8080/api/v1"
+tags:
+  - name: Users
+    description: Operations about users
+  - name: Authentication
+    description: Operations about Authentication
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Authenticate a user
+      description: Authenticate a user by providing their username and password. Returns the user's profile and an authorization token if authentication is successful.
+      operationId: authenticateUser
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/AuthRequestDto"
+      responses:
+        "200":
+          description: User authenticated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDto"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+  /users:
+    post:
+      tags:
+        - Users
+      summary: Create a new user
+      description: Create a new user with the provided information.
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDto"
+      responses:
+        "201":
+          description: User created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDto"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+    get:
+      tags:
+        - Users
+      summary: Get a list of all users
+      description: Retrieve a list of all user profiles.
+      operationId: getAllUsers
+      security:
+        - JwtAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/Size"
+      responses:
+        "200":
+          description: List of user profiles.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageUserDto"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+  /users/{user-id}:
+    get:
+      tags:
+        - Users
+      summary: Get user by ID
+      description: Retrieve a user's profile by their unique ID.
+      operationId: getUserById
+      security:
+        - JwtAuth: []
+      parameters:
+        - $ref: "#/components/parameters/UserId"
+      responses:
+        "200":
+          description: User profile.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDto"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+    put:
+      tags:
+        - Users
+      summary: Update user by ID
+      description: Update a user's profile by their unique ID.
+      operationId: updateUser
+      security:
+        - JwtAuth: []
+      parameters:
+        - $ref: "#/components/parameters/UserId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDto"
+      responses:
+        "200":
+          description: User updated successfully.
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+    delete:
+      tags:
+        - Users
+      summary: Delete user by ID
+      description: Delete a user's profile by their unique ID.
+      operationId: deleteUser
+      security:
+        - JwtAuth: []
+      parameters:
+        - $ref: "#/components/parameters/UserId"
+      responses:
+        "204":
+          description: User deleted successfully.
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    UserId:
+      name: user-id
+      in: path
+      required: true
+      description: The unique ID of the user.
+      schema:
+        type: string
+        format: uuid
+    Page:
+      name: page
+      in: query
+      description: The page number for paginating the results (default is 0).
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    Size:
+      name: size
+      in: query
+      description: The number of items to include per page (default is 5).
+      schema:
+        type: integer
+        format: int32
+        default: 5
+  schemas:
+    AuthRequestDto:
+      type: object
+      properties:
+        username:
+          type: string
+          description: The user's username or email address.
+        password:
+          type: string
+          format: password
+          description: The user's password.
+      required:
+        - username
+        - password
+
+    ErrorDto:
+      type: object
+      additionalProperties: false
+      description: >-
+        Este objeto contiene infromación relacionada con errores presentados en
+        el microservicio.
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        time_stamp:
+          type: string
+        metadata:
+          type: array
+          items:
+            type: string
+    UserDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The user's id.
+          readOnly: true
+        name:
+          type: string
+          description: The user's full name.
+        email:
+          type: string
+          format: email
+          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+          description: The user's email address.
+        password:
+          type: string
+          format: password
+          description: The user's password.
+          writeOnly: true
+          x-constraints: "@CustomPasswordValidation"
+        phones:
+          type: array
+          items:
+            $ref: "#/components/schemas/PhoneDto"
+          description: List of user's phone numbers.
+        created:
+          type: string
+          format: date-time
+          description: The date and time when the user was created.
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          description: The date and time when the user was last modified.
+          readOnly: true
+        isActive:
+          type: boolean
+          description: Indicates whether the user is active in the system.
+          readOnly: true
+        last_login:
+          type: string
+          format: date-time
+          description: Last login
+          readOnly: true
+        token:
+          type: string
+          description: Authorization token used to access the other endpoints.
+          readOnly: true
+      required:
+        - name
+        - email
+        - password
+        - phones
+    PhoneDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The phone id.
+        number:
+          type: string
+          description: The phone number.
+        citycode:
+          type: string
+          description: The city code.
+        countrycode:
+          type: string
+          description: The country code.
+      required:
+        - number
+        - citycode
+        - countrycode
+    PageUserDto:
+      type: object
+      properties:
+        total_items:
+          type: integer
+          format: int64
+          description: Total items.
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserDto"
+        total_pages:
+          type: integer
+          format: int32
+          description: Total pages.
+        current_page:
+          type: integer
+          format: int32
+          description: Current page.
+
+  responses:
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorDto"
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorDto"
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorDto"
+    NotFound:
+      description: No users found.
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorDto"
+    UnexpectedError:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorDto"

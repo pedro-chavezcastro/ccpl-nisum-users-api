@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.15</version>
+		<version>2.7.12</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.nisum.ccpl</groupId>
@@ -15,6 +15,8 @@
 	<description>Nisum User API</description>
 	<properties>
 		<java.version>11</java.version>
+		<spring-cloud.version>2021.0.7</spring-cloud.version>
+		<openapi-generator.version>6.4.0</openapi-generator.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -40,13 +42,135 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.7.0</version>
+		</dependency>
 	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.6</version>
+				<configuration>
+					<excludes>
+						<exclude>**/*Application.*</exclude>
+						<exclude>**/*Api*.*</exclude>
+						<exclude>**/entity/*</exclude>
+						<exclude>**/entity/**/*</exclude>
+						<exclude>**/constant/*</exclude>
+						<exclude>**/constant/**/*</exclude>
+						<exclude>**/config/*</exclude>
+						<exclude>**/config/**/*</exclude>
+						<exclude>**/autoconfigure/*</exclude>
+						<exclude>**/autoconfigure/**/*</exclude>
+						<exclude>**/model/*</exclude>
+						<exclude>**/model/**/*</exclude>
+						<exclude>**/dto/*</exclude>
+						<exclude>**/dto/**/*</exclude>
+						<exclude>**/exception/*</exclude>
+						<exclude>**/exception/**/*</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-check</id>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<rule>
+									<element>PACKAGE</element>
+									<limits>
+										<limit>
+											<counter>LINE</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>0.80</minimum>
+										</limit>
+									</limits>
+								</rule>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>${openapi-generator.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/api/ccpl-nisum-users-api.yml</inputSpec>
+							<generatorName>spring</generatorName>
+							<library>spring-boot</library>
+							<apiPackage>com.nisum.ccplnisumusers.api</apiPackage>
+							<modelPackage>com.nisum.ccplnisumusers.model</modelPackage>
+							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+							<configOptions>
+								<interfaceOnly>true</interfaceOnly>
+								<delegatePattern>false</delegatePattern>
+							</configOptions>
+							<typeMappings>
+								OffsetDateTime=java.time.LocalDateTime
+							</typeMappings>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

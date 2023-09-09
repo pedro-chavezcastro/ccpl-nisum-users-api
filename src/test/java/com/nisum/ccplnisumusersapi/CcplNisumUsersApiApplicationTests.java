@@ -1,4 +1,4 @@
-package com.nisum.ccpl.ccplnisumusersapi;
+package com.nisum.ccplnisumusersapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

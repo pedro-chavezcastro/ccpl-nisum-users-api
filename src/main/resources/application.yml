@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ccpl-nisum-users
+  datasource:
+    url: jdbc:h2:mem:nisum
+    username: nisum-user
+    password: CCPLNisum2023
+    driverClassName: org.h2.Driver
+  h2:
+    console.enabled: true
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
