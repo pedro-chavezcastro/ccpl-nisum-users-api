@@ -53,9 +53,7 @@ public class UserEntity {
     @Column(name = "accessToken")
     private String accessToken;
 
-    @OneToMany(mappedBy = "user",
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
-            fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<PhoneEntity> phones;
 
     public void addPhone(PhoneEntity phone) {
