@@ -2,12 +2,10 @@ package com.nisum.ccplnisumusersapi.service.impl.mapper;
 
 import com.nisum.ccplnisumusersapi.dataprovider.jpa.entity.PhoneEntity;
 import com.nisum.ccplnisumusersapi.dataprovider.jpa.entity.UserEntity;
-import com.nisum.ccplnisumusersapi.dataprovider.jpa.repository.IPhoneRepository;
 import com.nisum.ccplnisumusersapi.model.PageUserDto;
 import com.nisum.ccplnisumusersapi.model.PhoneDto;
 import com.nisum.ccplnisumusersapi.model.UpdateUserDto;
 import com.nisum.ccplnisumusersapi.model.UserDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -20,19 +18,16 @@ import java.util.stream.Collectors;
 @Component
 public class UserMapperImpl implements IUserMapper {
 
-    @Autowired
-    private IPhoneRepository phoneRepository;
-
     @Override
-    public UserEntity mapInUserDtoToEntity(UserDto userDto) {
+    public UserEntity mapInUserDtoToEntity(UserDto userDto, String accessToken, String password) {
 
         UserEntity userEntity = new UserEntity();
         userEntity.setName(userDto.getName());
         userEntity.setEmail(userDto.getEmail());
-        userEntity.setPassword(userDto.getPassword());
+        userEntity.setPassword(password);
         userEntity.setCreated(LocalDateTime.now());
         userEntity.setIsActive(Boolean.TRUE);
-        userEntity.setAccessToken(null);
+        userEntity.setAccessToken(accessToken);
 
         userDto.getPhones().forEach(phoneDto -> this.mapInPhoneDtoToEntity(userEntity, phoneDto));
 
@@ -40,7 +35,7 @@ public class UserMapperImpl implements IUserMapper {
     }
 
     @Override
-    public UserDto mapOutUserEntityToDto(UserEntity userEntity) {
+    public UserDto mapOutUserEntityToDto(UserEntity userEntity, Boolean isQuery) {
         UserDto userDto = new UserDto();
         userDto.setId(userEntity.getId());
         userDto.setName(userEntity.getName());
@@ -50,7 +45,7 @@ public class UserMapperImpl implements IUserMapper {
         userDto.setIsActive(userEntity.getIsActive());
         userDto.setLastLogin(Objects.nonNull(userEntity.getLastLogin()) ? userEntity.getLastLogin() : userEntity.getCreated());
         userDto.setPhones(userEntity.getPhones().stream().map(this::mapOutPhoneEntityToDto).collect(Collectors.toList()));
-        userDto.setToken(userEntity.getAccessToken());
+        userDto.setToken(isQuery ? null : userEntity.getAccessToken());
         return userDto;
     }
 
@@ -58,16 +53,21 @@ public class UserMapperImpl implements IUserMapper {
     public PageUserDto mapOutUserEntityToPageDto(Page<UserEntity> userPage) {
         PageUserDto pageUserDto = new PageUserDto();
         pageUserDto.setTotalItems(userPage.getTotalElements());
-        pageUserDto.setUsers(userPage.getContent().stream().map(this::mapOutUserEntityToDto).collect(Collectors.toList()));
         pageUserDto.setCurrentPage(userPage.getNumber());
         pageUserDto.setTotalPages(userPage.getTotalPages());
+
+        pageUserDto.setUsers(userPage.getContent()
+                .stream().map(userEntity -> this.mapOutUserEntityToDto(userEntity, Boolean.TRUE))
+                .collect(Collectors.toList()));
+
         return pageUserDto;
     }
 
     @Override
-    public void mapInUpdateUser(UserEntity userEntity, UpdateUserDto userDto) {
+    public void mapInUpdateUser(UserEntity userEntity, UpdateUserDto userDto, String password) {
         userEntity.setName(userDto.getName());
-        userEntity.setPassword(userDto.getPassword());
+        userEntity.setPassword(password);
+        userEntity.setModified(LocalDateTime.now());
 
         List<PhoneEntity> existingPhones = userEntity.getPhones();
         List<PhoneDto> updatedPhones = userDto.getPhones();

@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CustomPasswordValidation {
 
-    String message() default "Invalid password";
+    String message() default "La contraseña no cunple con el formato de la expresión regular.";
 
     Class<?>[] groups() default {};
 

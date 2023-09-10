@@ -8,11 +8,11 @@ import org.springframework.data.domain.Page;
 
 public interface IUserMapper {
 
-    UserEntity mapInUserDtoToEntity(UserDto userDto);
+    UserEntity mapInUserDtoToEntity(UserDto userDto, String accessToken, String password);
 
-    UserDto mapOutUserEntityToDto(UserEntity userCreatedEntity);
+    UserDto mapOutUserEntityToDto(UserEntity userCreatedEntity, Boolean isQuery);
 
     PageUserDto mapOutUserEntityToPageDto(Page<UserEntity> userPage);
 
-    void mapInUpdateUser(UserEntity userEntity, UpdateUserDto userDto);
+    void mapInUpdateUser(UserEntity userEntity, UpdateUserDto userDto, String password);
 }
