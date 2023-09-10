@@ -9,8 +9,31 @@ Para ejecutar este microservicio en un entorno local, tenga en cuenta los siguie
 1. Clonar este repositorio.
 2. Abrir el proyecto en el IDE de preferencia (por ejemplo, IntelliJ IDEA o Eclipse).
 3. Configurar las variables de entorno, como la expresión regular de la contraseña, el tiempo de expiración del JWT y la clave secreta JWT, en el archivo de propiedades de la aplicación (application.yml).
-4. Ejecuta la aplicación Spring Boot.
+4. Ejecutar el comando `mvn clean generate-sources`
+5. Ejecuta la aplicación Spring Boot.
 5. La API estará disponible en `http://localhost:8080/api/v1`.
+
+## Especificación OpenAPI/Swagger
+
+La especificación OpenAPI/Swagger utilizada como base para el desarrollo de esta aplicación se encuentra en la carpeta "api" en la raíz del proyecto. Esta especificación define la estructura de la API, incluyendo los endpoints, los objetos de datos y la documentación de los servicios disponibles.
+
+![img.png](src/main/resources/documentation/images/openApiSpecification.png)
+
+El archivo de especificación OpenAPI/Swagger se encuentra en la siguiente ubicación:
+
+`/api/ccpl-nisum-users-api.yml`
+
+### Enfoque de "Open API First"
+
+Este proyecto se ha desarrollado siguiendo un enfoque de "Open API First". Esto significa que la especificación de la API se define primero en formato OpenAPI/Swagger antes de escribir el código de implementación.
+
+### Generación de Código con openapi-generator-maven-plugin
+
+Para la implementación de la API, se ha utilizado el plugin "openapi-generator-maven-plugin". Este plugin permite generar automáticamente el código necesario a partir de la especificación OpenAPI/Swagger. El código generado incluye controladores, modelos de datos y otros componentes necesarios para exponer y gestionar los servicios definidos en la especificación.
+
+Para generar el código a partir de la especificación, se debe ejecutar el siguiente comando Maven:
+
+`mvn clean generate-sources`
 
 ## Postman
 
