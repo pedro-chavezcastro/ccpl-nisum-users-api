@@ -1,4 +1,4 @@
-# Microservicio de Gestión de Usuarios con Spring Boot
+# Nisum - Microservicio de Gestión de Usuarios
 
 Este microservicio proporciona una API para gestionar la información de los usuarios. Está construido con Spring Boot y utiliza Maven para la gestión de dependencias.
 
@@ -21,8 +21,8 @@ A continuación, podra descargar la colección Postman del API.
 ## Registro de Usuarios
 
 Este endpoint permite crear un nuevo usuario en el sistema proporcionando la información del mismo en formato JSON.
-El servicio retornará los datos relacionados al usuario que se creó, dentro de estos datos recibirás un token JWT 
-válido que puedes utilizar para acceder a otros endpoints protegidos.
+El servicio retornará los datos relacionados al usuario que se creó, dentro de estos datos se retornará un token JWT 
+válido que puede ser usado para acceder a otros endpoints protegidos.
 
 - **URL**: `/api/v1/users`
 - **Método**: `POST`
@@ -36,7 +36,8 @@ válido que puedes utilizar para acceder a otros endpoints protegidos.
 
 ## Autenticación de Usuario
 
-Este endpoint te permite autenticar un usuario proporcionando su nombre de usuario (correo electrónico) y contraseña. Si la autenticación es exitosa, recibirás un token JWT válido que puedes utilizar para acceder a otros endpoints protegidos.
+Este endpoint permite autenticar un usuario proporcionando su nombre de usuario (correo electrónico) y contraseña. 
+Si la autenticación es exitosa, se retornará un token JWT válido que puede ser usado para acceder a otros endpoints protegidos.
 
 - **URL**: `/api/v1/auth/login`
 - **Método**: `POST`
@@ -50,7 +51,7 @@ Este endpoint te permite autenticar un usuario proporcionando su nombre de usuar
 
 ## Obtener Usuario por ID
 
-Este endpoint te permite obtener el perfil de un usuario específico proporcionando su ID único.
+Este endpoint permite obtener el perfil de un usuario específico proporcionando su ID único.
 
 - **URL**: `/api/v1/users/{user-id}`
 - **Método**: `GET`
@@ -59,13 +60,15 @@ Este endpoint te permite obtener el perfil de un usuario específico proporciona
 
 ### Ejemplo de Solicitud en Postman
 
-Reemplaza `{user-id}` con el ID real del usuario que deseas obtener.
+Reemplazar `{user-id}` con el ID real del usuario que requiere obtener.
 
 ![img.png](src/main/resources/documentation/images/getUserById.png)
 
 ## Obtener Lista de Usuarios
 
-Este endpoint te permite obtener una lista de todos los perfiles de usuario en el sistema. Puedes utilizar paginación para controlar la cantidad de resultados que se muestran en cada página.
+Este endpoint permite obtener una lista de todos los perfiles de usuario en el 
+sistema. Puede hacer uso de la paginación para controlar la cantidad de resultados 
+que se muestran en cada página.
 
 - **URL**: `/api/v1/users`
 - **Método**: `GET`
@@ -78,7 +81,9 @@ Este endpoint te permite obtener una lista de todos los perfiles de usuario en e
 
 ## Actualizar Usuario por ID
 
-Este endpoint te permite actualizar el perfil de un usuario específico proporcionando su ID único. Puedes modificar el nombre, la contraseña y los números de teléfono de contacto del usuario.
+Este endpoint permite actualizar el perfil de un usuario específico proporcionando
+su ID único. Los datos que son posibles modificar son: el nombre, la contraseña y
+los números de teléfono de contacto del usuario.
 
 - **URL**: `/api/v1/users/{user-id}`
 - **Método**: `PUT`
@@ -87,14 +92,27 @@ Este endpoint te permite actualizar el perfil de un usuario específico proporci
 
 ### Ejemplo de Solicitud en Postman
 
-Reemplaza `{user-id}` con el ID real del usuario que deseas actualizar. En el cuerpo de la solicitud, proporciona los datos a actualizar en formato JSON como se muestra en el ejemplo a continuación.
+Reemplazar `{user-id}` con el ID real del usuario que requiere actualizar. En el cuerpo de la solicitud, proporciona los datos a actualizar en formato JSON como se muestra en el ejemplo a continuación.
 
 Tener en cuenta lo siguientes casos:
 
 1.	Modificar teléfono existente: En caso de requerir modificar datos asociados a un teléfono de contacto especifico (existente) se debe proporcionar el id del mismo generado en la creación y actualizar los demás campos según aplique.
-2.	Eliminar teléfono: En caso de requerir eliminar un teléfono de contacto solo es necesario quitar completamente el registro de la lista.
+2.	Eliminar teléfono: En caso de requerir eliminar un teléfono de contacto solo es necesario remover completamente el registro de la lista.
 3.	Agregar nuevo teléfono: En caso de requerir agregar un nuevo teléfono de contacto, es necesario agregar un nuevo registro a la lista estableciendo el campo “id” como null.
 
 ![img.png](src/main/resources/documentation/images/updateUser.png)
 
+## Desactivar Usuario por ID
 
+Este endpoint permite desactivar (realizar una eliminación lógica) un usuario específico proporcionando su ID único. La desactivación implica que el usuario ya no estará activo en el sistema, pero su perfil se mantendrá para futuras referencias.
+
+- **URL**: `/api/v1/users/{user-id}`
+- **Método**: `DELETE`
+- **Headers**:
+  - **Autorización**: Se requiere un token JWT válido para acceder a este endpoint.
+
+### Ejemplo de Solicitud en Postman
+
+Reemplazar `{user-id}` con el ID real del usuario que requiere desactivar.
+
+![img.png](src/main/resources/documentation/images/deleteUserById.png)
