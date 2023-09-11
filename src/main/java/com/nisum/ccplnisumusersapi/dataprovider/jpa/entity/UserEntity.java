@@ -50,7 +50,7 @@ public class UserEntity {
     @Column(name = "is_active")
     private Boolean isActive;
 
-    @Column(name = "accessToken")
+    @Column(name = "access_token")
     private String accessToken;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)

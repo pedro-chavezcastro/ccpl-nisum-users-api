@@ -2,15 +2,58 @@
 
 Este microservicio proporciona una API para gestionar la información de los usuarios. Está construido con Spring Boot y utiliza Maven para la gestión de dependencias.
 
+## Diagrama de la solución Perspectiva Backend
+
+![img.png](src/main/resources/documentation/images/backendApp.png)
+
+## Modelo Base de Datos H2 en Memoria
+
+Esta sección proporciona un script SQL para crear las tablas necesarias en una base de datos H2 en memoria para el sistema de gestión de usuarios.
+
+### Tabla "users"
+
+La tabla "users" almacenará la información de los usuarios.
+
+```sql
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+    id UUID PRIMARY KEY,
+    name VARCHAR(50),
+    email VARCHAR(255) UNIQUE,
+    password VARCHAR(255),
+    created TIMESTAMP,
+    modified TIMESTAMP,
+    last_login TIMESTAMP,
+    is_active BOOLEAN,
+    access_token VARCHAR(255)
+);
+```
+
+### Tabla "phones"
+
+La tabla "phones" almacenará la información de los teléfonos asociados a los usuarios.
+
+```sql
+DROP TABLE IF EXISTS phones;
+
+CREATE TABLE phones (
+    id UUID PRIMARY KEY,
+    number VARCHAR(20),
+    city_code VARCHAR(10),
+    country_code VARCHAR(10),
+    id_user_fk UUID,
+    FOREIGN KEY (id_user_fk) REFERENCES users(id)
+);
+```
+
 ## Instalación y Configuración
 
 Para ejecutar este microservicio en un entorno local, tenga en cuenta los siguientes pasos:
 
 1. Clonar este repositorio.
-2. Abrir el proyecto en el IDE de preferencia (por ejemplo, IntelliJ IDEA o Eclipse).
-3. Configurar las variables de entorno, como la expresión regular de la contraseña, el tiempo de expiración del JWT y la clave secreta JWT, en el archivo de propiedades de la aplicación (application.yml).
 4. Ejecutar el comando `mvn clean generate-sources`
-5. Ejecuta la aplicación Spring Boot.
+5. Ejecuta la aplicación Spring Boot con el comando `mvn spring-boot:run`
 5. La API estará disponible en `http://localhost:8080/api/v1`.
 
 ## Especificación OpenAPI/Swagger
@@ -23,21 +66,12 @@ El archivo de especificación OpenAPI/Swagger se encuentra en la siguiente ubica
 
 `/api/ccpl-nisum-users-api.yml`
 
-### Enfoque de "Open API First"
-
-Este proyecto se ha desarrollado siguiendo un enfoque de "Open API First". Esto significa que la especificación de la API se define primero en formato OpenAPI/Swagger antes de escribir el código de implementación.
-
-### Generación de Código con openapi-generator-maven-plugin
-
-Para la implementación de la API, se ha utilizado el plugin "openapi-generator-maven-plugin". Este plugin permite generar automáticamente el código necesario a partir de la especificación OpenAPI/Swagger. El código generado incluye controladores, modelos de datos y otros componentes necesarios para exponer y gestionar los servicios definidos en la especificación.
-
-Para generar el código a partir de la especificación, se debe ejecutar el siguiente comando Maven:
-
-`mvn clean generate-sources`
-
 ## Postman
 
 A continuación, podra descargar la colección Postman del API.
+
+- [ENV-NISUM.postman_environment.json](src%2Fmain%2Fresources%2Fdocumentation%2FpostmanCollection%2FENV-NISUM.postman_environment.json)
+- [Nisum API User.postman_collection.json](src%2Fmain%2Fresources%2Fdocumentation%2FpostmanCollection%2FNisum%20API%20User.postman_collection.json)
 
 ## Uso de la API
 
@@ -139,3 +173,10 @@ Este endpoint permite desactivar (realizar una eliminación lógica) un usuario 
 Reemplazar `{user-id}` con el ID real del usuario que requiere desactivar.
 
 ![img.png](src/main/resources/documentation/images/deleteUserById.png)
+
+## Contacto
+
+- Nombre: Pedro Luis Chavez Castro
+- Correo electrónico: chavezcastro.pedroluis98@gmail.com
+- LinkedIn: [Perfil de LinkedIn](https://www.linkedin.com/in/pedro-luis-chavez-castro-2b60401a5/)
+

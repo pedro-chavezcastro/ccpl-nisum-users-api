@@ -35,10 +35,10 @@ public class PhoneEntity {
     @Column(name = "number")
     private String number;
 
-    @Column(name = "cityCode")
+    @Column(name = "city_code")
     private String cityCode;
 
-    @Column(name = "countryCode")
+    @Column(name = "country_code")
     private String countryCode;
 
     @ManyToOne(fetch = FetchType.EAGER)
