@@ -129,6 +129,10 @@
 						<exclude>**/dto/**/*</exclude>
 						<exclude>**/exception/*</exclude>
 						<exclude>**/exception/**/*</exclude>
+						<exclude>**/security/*</exclude>
+						<exclude>**/security/**/*</exclude>
+						<exclude>**/util/*</exclude>
+						<exclude>**/util/**/*</exclude>
 					</excludes>
 				</configuration>
 				<executions>
