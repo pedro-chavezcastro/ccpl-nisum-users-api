@@ -2,6 +2,25 @@
 
 Este microservicio proporciona una API para gestionar la información de los usuarios. Está construido con Spring Boot y utiliza Maven para la gestión de dependencias.
 
+<!-- TOC -->
+* [Nisum - Microservicio de Gestión de Usuarios](#nisum---microservicio-de-gestión-de-usuarios)
+  * [Diagrama de la solución Perspectiva Backend](#diagrama-de-la-solución-perspectiva-backend)
+  * [Modelo Base de Datos H2 en Memoria](#modelo-base-de-datos-h2-en-memoria)
+    * [Tabla "users"](#tabla--users-)
+    * [Tabla "phones"](#tabla--phones-)
+  * [Instalación y Configuración](#instalación-y-configuración)
+  * [Especificación OpenAPI/Swagger](#especificación-openapiswagger)
+  * [Postman](#postman)
+  * [Uso de la API](#uso-de-la-api)
+    * [Registro de Usuarios](#registro-de-usuarios)
+    * [Autenticación de Usuario](#autenticación-de-usuario)
+    * [Obtener Usuario por ID](#obtener-usuario-por-id)
+    * [Obtener Lista de Usuarios](#obtener-lista-de-usuarios)
+    * [Actualizar Usuario por ID](#actualizar-usuario-por-id)
+    * [Desactivar Usuario por ID](#desactivar-usuario-por-id)
+  * [Contacto](#contacto)
+<!-- TOC -->
+
 ## Diagrama de la solución Perspectiva Backend
 
 ![img.png](src/main/resources/documentation/images/backendApp.png)
@@ -75,7 +94,7 @@ A continuación, podra descargar la colección Postman del API.
 
 ## Uso de la API
 
-## Registro de Usuarios
+### Registro de Usuarios
 
 Este endpoint permite crear un nuevo usuario en el sistema proporcionando la información del mismo en formato JSON.
 El servicio retornará los datos relacionados al usuario que se creó, dentro de estos datos se retornará un token JWT 
@@ -87,11 +106,11 @@ válido que puede ser usado para acceder a otros endpoints protegidos.
     - `Content-Type: application/json`
     - **Autorización**: No se requiere autorización para crear un nuevo usuario.
 
-### Ejemplo de Solicitud en Postman
+**Ejemplo de Solicitud en Postman**
 
 ![img.png](src/main/resources/documentation/images/createUser.png)
 
-## Autenticación de Usuario
+### Autenticación de Usuario
 
 Este endpoint permite autenticar un usuario proporcionando su nombre de usuario (correo electrónico) y contraseña. 
 Si la autenticación es exitosa, se retornará un token JWT válido que puede ser usado para acceder a otros endpoints protegidos.
@@ -102,11 +121,11 @@ Si la autenticación es exitosa, se retornará un token JWT válido que puede se
   - `Content-Type: application/x-www-form-urlencoded`
   - **Autorización**: No se requiere autorización para autenticar un usuario.
 
-### Ejemplo de Solicitud en Postman
+**Ejemplo de Solicitud en Postman**
 
 ![img.png](src/main/resources/documentation/images/login.png)
 
-## Obtener Usuario por ID
+### Obtener Usuario por ID
 
 Este endpoint permite obtener el perfil de un usuario específico proporcionando su ID único.
 
@@ -115,13 +134,13 @@ Este endpoint permite obtener el perfil de un usuario específico proporcionando
 - **Headers**:
   - **Autorización**: Se requiere un token JWT válido para acceder a este endpoint.
 
-### Ejemplo de Solicitud en Postman
+**Ejemplo de Solicitud en Postman**
 
 Reemplazar `{user-id}` con el ID real del usuario que requiere obtener.
 
 ![img.png](src/main/resources/documentation/images/getUserById.png)
 
-## Obtener Lista de Usuarios
+### Obtener Lista de Usuarios
 
 Este endpoint permite obtener una lista de todos los perfiles de usuario en el 
 sistema. Puede hacer uso de la paginación para controlar la cantidad de resultados 
@@ -132,11 +151,11 @@ que se muestran en cada página.
 - **Headers**:
   - **Autorización**: Se requiere un token JWT válido para acceder a este endpoint.
 
-### Ejemplo de Solicitud en Postman
+***Ejemplo de Solicitud en Postman***
 
 ![img.png](src/main/resources/documentation/images/getAllUsers.png)
 
-## Actualizar Usuario por ID
+### Actualizar Usuario por ID
 
 Este endpoint permite actualizar el perfil de un usuario específico proporcionando
 su ID único. Los datos que son posibles modificar son: el nombre, la contraseña y
@@ -147,7 +166,7 @@ los números de teléfono de contacto del usuario.
 - **Headers**:
   - **Autorización**: Se requiere un token JWT válido para acceder a este endpoint.
 
-### Ejemplo de Solicitud en Postman
+**Ejemplo de Solicitud en Postman**
 
 Reemplazar `{user-id}` con el ID real del usuario que requiere actualizar. En el cuerpo de la solicitud, proporciona los datos a actualizar en formato JSON como se muestra en el ejemplo a continuación.
 
@@ -159,7 +178,7 @@ Tener en cuenta lo siguientes casos:
 
 ![img.png](src/main/resources/documentation/images/updateUser.png)
 
-## Desactivar Usuario por ID
+### Desactivar Usuario por ID
 
 Este endpoint permite desactivar (realizar una eliminación lógica) un usuario específico proporcionando su ID único. La desactivación implica que el usuario ya no estará activo en el sistema, pero su perfil se mantendrá para futuras referencias.
 
@@ -168,14 +187,14 @@ Este endpoint permite desactivar (realizar una eliminación lógica) un usuario 
 - **Headers**:
   - **Autorización**: Se requiere un token JWT válido para acceder a este endpoint.
 
-### Ejemplo de Solicitud en Postman
+**Ejemplo de Solicitud en Postman**
 
 Reemplazar `{user-id}` con el ID real del usuario que requiere desactivar.
 
 ![img.png](src/main/resources/documentation/images/deleteUserById.png)
 
 ## Contacto
-
+  
 - Nombre: Pedro Luis Chavez Castro
 - Correo electrónico: chavezcastro.pedroluis98@gmail.com
 - LinkedIn: [Perfil de LinkedIn](https://www.linkedin.com/in/pedro-luis-chavez-castro-2b60401a5/)
