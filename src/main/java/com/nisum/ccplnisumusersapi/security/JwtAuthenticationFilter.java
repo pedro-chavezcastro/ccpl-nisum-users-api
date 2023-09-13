@@ -28,6 +28,10 @@ import java.util.Optional;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
+    private static final String USERNAME_KEY = "username";
+    private static final String TOKEN_KEY = "token";
+    private static final String PATH_LOGIN = "/api/v1/auth/login";
+
     private final AuthenticationManager authenticationManager;
     private final IJWTService jwtService;
     private final IUserRepository userRepository;
@@ -36,7 +40,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.userRepository = userRepository;
-        setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/api/v1/auth/login", HttpMethod.POST.name()));
+        setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(PATH_LOGIN, HttpMethod.POST.name()));
     }
 
     @Override
@@ -66,8 +70,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             this.updateLastLoginAndTokenUser(token, userEntityOptional.get());
 
             Map<String, Object> map = new HashMap<>();
-            map.put("username", username);
-            map.put("token", token);
+            map.put(USERNAME_KEY, username);
+            map.put(TOKEN_KEY, token);
 
             response.getWriter().write(new ObjectMapper().writeValueAsString(map));
             response.setStatus(200);

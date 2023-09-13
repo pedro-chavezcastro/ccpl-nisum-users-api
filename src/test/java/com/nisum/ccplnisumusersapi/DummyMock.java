@@ -20,6 +20,7 @@ import java.util.UUID;
 public class DummyMock {
 
     public static final String JWT_TOKEN_MOCK = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkYW5pZWxhYXJhZ29uMDhAZ21haWwuY29tIiwiZXhwIjoxNjk0Mzg0OTU4fQ.yLzArmMtrFECUjE7nUYaP8YYhMTax4PyFFBWrzNUKOLHAR4vXvO-LkZ0BSSgk1cs3M1O4eSltSlxUNm_mBZJow";
+    public static final String JWT_BEARER_TOKEN_MOCK = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkYW5pZWxhYXJhZ29uMDhAZ21haWwuY29tIiwiZXhwIjoxNjk0Mzg0OTU4fQ.yLzArmMtrFECUjE7nUYaP8YYhMTax4PyFFBWrzNUKOLHAR4vXvO-LkZ0BSSgk1cs3M1O4eSltSlxUNm_mBZJow";
 
     public static UserEntity getUserEntity(String userName) {
 

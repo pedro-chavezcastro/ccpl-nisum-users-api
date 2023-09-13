@@ -45,7 +45,7 @@ public class UserMapperImpl implements IUserMapper {
         userDto.setIsActive(userEntity.getIsActive());
         userDto.setLastLogin(Objects.nonNull(userEntity.getLastLogin()) ? userEntity.getLastLogin() : userEntity.getCreated());
         userDto.setPhones(userEntity.getPhones().stream().map(this::mapOutPhoneEntityToDto).collect(Collectors.toList()));
-        userDto.setToken(isQuery ? null : userEntity.getAccessToken());
+        userDto.setToken(Boolean.TRUE.equals(isQuery) ? null : userEntity.getAccessToken());
         return userDto;
     }
 
