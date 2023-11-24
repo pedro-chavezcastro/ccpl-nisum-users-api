@@ -5,9 +5,11 @@ import com.nisum.ccplnisumusersapi.dataprovider.jpa.entity.UserEntity;
 import com.nisum.ccplnisumusersapi.dataprovider.jpa.repository.IPhoneRepository;
 import com.nisum.ccplnisumusersapi.dataprovider.jpa.repository.IUserRepository;
 import com.nisum.ccplnisumusersapi.exception.BusinessException;
+import com.nisum.ccplnisumusersapi.kafka.producer.UserCreatedKafkaProducer;
 import com.nisum.ccplnisumusersapi.model.PageUserDto;
 import com.nisum.ccplnisumusersapi.model.UpdateUserDto;
 import com.nisum.ccplnisumusersapi.model.UserDto;
+import com.nisum.ccplnisumusersapi.model.kafka.UserCreatedDto;
 import com.nisum.ccplnisumusersapi.security.IJWTService;
 import com.nisum.ccplnisumusersapi.service.IUserService;
 import com.nisum.ccplnisumusersapi.service.impl.mapper.IUserMapper;
@@ -41,6 +43,9 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Autowired
+    private UserCreatedKafkaProducer userCreatedKafkaProducer;
+
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -51,7 +56,11 @@ public class UserServiceImpl implements IUserService {
                 this.jwtService.generateJwtToken(userDto.getEmail()), passwordEncoder.encode(userDto.getPassword()));
         UserEntity userCreatedEntity = this.saveUserEntity(userEntity);
 
-        return this.mapper.mapOutUserEntityToDto(userCreatedEntity, Boolean.FALSE);
+        UserDto userCreatedDto = this.mapper.mapOutUserEntityToDto(userCreatedEntity, Boolean.FALSE);
+
+        userCreatedKafkaProducer.produce(UserCreatedDto.builder().name(userCreatedDto.getName()).email(userCreatedDto.getEmail()).build());
+
+        return userCreatedDto;
     }
 
     @Override
